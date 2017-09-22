@@ -25,6 +25,9 @@ public class ProjectileController : MonoBehaviour {
 
 		}
 
+		if (other.gameObject.CompareTag("BorderUp"))
+			DestroyObject (this.gameObject);
+
 	}
 	void OnCollisionEnter2D(Collision2D other) {
 		Debug.Log ("TESTE Coll");
@@ -35,6 +38,8 @@ public class ProjectileController : MonoBehaviour {
 			DestroyObject (this.gameObject);
 
 		}
+		if (other.gameObject.CompareTag("BorderUp"))
+			DestroyObject (this.gameObject);
 
 	}
 

@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class AutoMove : MonoBehaviour {
 	public float speed = 5f;
-	// Use this for initialization
-	void Start () {
-		
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -15,5 +11,6 @@ public class AutoMove : MonoBehaviour {
 
 		if (transform.position.y < -11f)
 			transform.position = new Vector2(transform.position.x, 11f);
+
 	}
 }

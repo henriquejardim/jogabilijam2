@@ -10,11 +10,15 @@ public class Enemy : MonoBehaviour {
 	private Color m_DefaultColor;
 	private SpriteRenderer sr;
 	private Target target;
+	private AutoMove autoMove;
+
+	private bool onPath = false;
 
 	private bool dead = false;
 
 	// Use this for initialization
 	void Start () {
+		autoMove = GetComponent<AutoMove> ();
 		sr = GetComponent<SpriteRenderer> ();
 		target = GetComponent<Target> ();
 		m_DefaultColor = sr.color;
@@ -32,5 +36,17 @@ public class Enemy : MonoBehaviour {
 		sr.color = newColor;
 		dead = true;
 
+	}
+
+	void OnTriggerEnter2D(Collider2D other) {
+		if (other.CompareTag ("PathTrigger")) {
+			var pathComponent = GetComponent<TweenMove> ();
+			if (pathComponent != null && !onPath) {
+				onPath = true;
+				autoMove.enabled = false;
+				pathComponent.enabled = true;
+				pathComponent.MovePath ();
+			}
+		}
 	}
 }
