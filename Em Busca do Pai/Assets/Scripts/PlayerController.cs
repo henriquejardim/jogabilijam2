@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour {
 
 	public float Speed = 5f;
 	public GameObject Bullet;
-
+	public GameObject ShotPoint;
 
 
 	private Vector2 m_Movement;
@@ -41,12 +42,12 @@ public class PlayerController : MonoBehaviour {
 
 	void Shoot(){
 		lastShot = Time.time + coolDownShot;
-		Instantiate (Bullet, transform.position, transform.rotation);
+		Instantiate (Bullet, ShotPoint.transform.position, ShotPoint.transform.rotation);
 	}
 
 	void Melee(){
 		
 		var anim = GetComponent<Animator> ();
-		anim.SetTrigger ("Attack");
+		if (anim != null) anim.SetTrigger ("Attack");
 	}
 }
