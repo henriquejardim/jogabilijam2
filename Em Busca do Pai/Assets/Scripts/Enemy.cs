@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour {
 	public GameObject shotPoint;
 	public GameObject Bullet;
 	public float CoolDownFire;
+	public float BulletSpeed;
 	public bool PathEnabled;
 
 	private Color m_DefaultColor;
@@ -52,7 +53,10 @@ public class Enemy : MonoBehaviour {
 
 			if (lastShot <= Time.time) {
 				lastShot = Time.time + CoolDownFire;
-				Instantiate (Bullet, shotPoint.transform.position, shotPoint.transform.rotation);
+				var bullet =  Instantiate (Bullet, shotPoint.transform.position, shotPoint.transform.rotation);
+				var projController = bullet.GetComponent<ProjectileController> ();
+				if (BulletSpeed > 0f && projController != null)
+					projController.SetSpeed (BulletSpeed);
 
 			}
 				
@@ -65,7 +69,8 @@ public class Enemy : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		
+
+		Debug.Log (other.tag);
 		if (other.CompareTag ("PathTrigger")) {
 			
 			FindPlayer ();

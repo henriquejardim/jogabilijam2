@@ -14,13 +14,4 @@ public class ScoreRenderer
 		maxScore.RenderNumber (0);
 
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-	void OnGUI(){
-		Start ();
-	}
 }

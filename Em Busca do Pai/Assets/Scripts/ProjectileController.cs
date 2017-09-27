@@ -9,9 +9,22 @@ public class ProjectileController : MonoBehaviour {
 	public float speed = 200f;
 
 
+	private Rigidbody2D rb;
+
+	void Start(){
+		rb = gameObject.GetComponent<Rigidbody2D> ();
+	}
+
+
 	// Update is called once per frame
 	void Update () {
-		transform.Translate (-1 * (Vector2.down * speed * Time.deltaTime)); 
+		
+	
+	}
+	void FixedUpdate() {
+
+		rb.transform.Translate ((Vector2.up) * speed * Time.fixedDeltaTime);
+	
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -41,6 +54,10 @@ public class ProjectileController : MonoBehaviour {
 		if (other.gameObject.CompareTag("BorderUp"))
 			DestroyObject (this.gameObject);
 
+	}
+
+	public void SetSpeed(float newSpeed){
+		speed = newSpeed;
 	}
 
 }

@@ -8,6 +8,7 @@ public class TweenMove : MonoBehaviour {
 
 	public string PathName;
 	public float PathTime =15f;
+	public iTween.EaseType ease = iTween.EaseType.easeInOutSine;
 	// Use this for initialization
 	
 	// Update is called once per frame
@@ -16,6 +17,6 @@ public class TweenMove : MonoBehaviour {
 
 	public void MovePath(){
 		var path = GetComponent<iTweenPath> ();
-		iTween.MoveTo (gameObject, iTween.Hash ("path", iTweenPath.GetPath (PathName), "time", PathTime, "easetype", iTween.EaseType.easeInOutSine));
+		iTween.MoveTo (gameObject, iTween.Hash ("path", iTweenPath.GetPath (PathName), "time", PathTime, "easetype", ease));
 	}
 }
