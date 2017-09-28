@@ -33,9 +33,7 @@ public class ProjectileController : MonoBehaviour {
 		if (target != null) {
 			target.TakeDamage (damage);
 
-			DestroyObject (this.gameObject);
-		
-
+			DestroyObject (this.gameObject);	
 		}
 
 		if (other.gameObject.CompareTag("BorderUp"))
