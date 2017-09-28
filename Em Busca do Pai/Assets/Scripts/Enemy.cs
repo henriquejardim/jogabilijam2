@@ -34,33 +34,31 @@ public class Enemy : MonoBehaviour {
 		m_DefaultColor = sr.color;
 
 		target.dead.AddListener (AfterDead);
-
-
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (dead)
-			transform.Translate (((transform.position.x > 0) ? Vector2.right : Vector2.left) * 2 * Time.deltaTime);
+        if (dead) {
+            transform.Translate(((transform.position.x > 0) ? Vector2.right : Vector2.left) * 2 * Time.deltaTime);
+            return;
+        }
 
-		if (playerFound && !dead) {
+        if (!playerFound)
+            return;         
 
-			Vector3 lTargetDir = player.transform.position - shotPoint.transform.position;
-			lTargetDir.Normalize ();
-			float rot_z = Mathf.Atan2(lTargetDir.y, lTargetDir.x) * Mathf.Rad2Deg;
+		Vector3 lTargetDir = player.transform.position - shotPoint.transform.position;
+		lTargetDir.Normalize ();
+		float rot_z = Mathf.Atan2(lTargetDir.y, lTargetDir.x) * Mathf.Rad2Deg;
 			 
-			shotPoint.transform.rotation =  Quaternion.Euler(0f, 0f, rot_z - 90);
+		shotPoint.transform.rotation =  Quaternion.Euler(0f, 0f, rot_z - 90);
 
-			if (lastShot <= Time.time) {
-				lastShot = Time.time + CoolDownFire;
-				var bullet =  Instantiate (Bullet, shotPoint.transform.position, shotPoint.transform.rotation);
-				var projController = bullet.GetComponent<ProjectileController> ();
-				if (BulletSpeed > 0f && projController != null)
-					projController.SetSpeed (BulletSpeed);
-
-			}
-				
-		}
+		if (lastShot <= Time.time) {
+			lastShot = Time.time + CoolDownFire;
+			var bullet =  Instantiate (Bullet, shotPoint.transform.position, shotPoint.transform.rotation);
+			var projController = bullet.GetComponent<ProjectileController> ();
+			if (BulletSpeed > 0f && projController != null)
+				projController.SetSpeed (BulletSpeed);
+		}						
 	}
 
 	public void AfterDead(){
