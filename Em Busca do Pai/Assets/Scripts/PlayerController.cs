@@ -1,20 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour {
 
-	public float Speed = 5f;    
+	public float Speed = 5f;
+    private Color hurtColor = Color.red;
     public GameObject Bullet;
 	public GameObject ShotPoint;
-    
+
+    private Color m_DefaultColor;
+
     private Vector2 m_Movement;
 	private Rigidbody2D rb;
+    private SpriteRenderer sr;
 
     private Animator anim;
     private Target target;
+
     private bool dead = false;
+    private bool hurt = false;
 
     private float lastShot = 0f;
 	private float coolDownShot = 0.2f;
@@ -25,7 +32,22 @@ public class PlayerController : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
         target = GetComponent<Target>();
         anim = GetComponent<Animator>();
-        target.dead.AddListener(AfterDead);
+        sr = GetComponent<SpriteRenderer>();
+        m_DefaultColor = sr.color;
+
+        target.dead.AddListener(AfterDead);        
+        target.hurt.AddListener(AfterHurt);
+    }
+
+    public void AfterHurt() {
+        sr.color = hurtColor;
+        hurt = true;
+        StartCoroutine(HurtWait());
+    }
+
+    private IEnumerator HurtWait() {
+        yield return new WaitForSeconds(0.3f); //invul time
+        hurt = false;
     }
 
     public void AfterDead() {        
@@ -34,6 +56,9 @@ public class PlayerController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+
+        if (!hurt && sr.color != m_DefaultColor)
+            sr.color = m_DefaultColor;        
 
         if (dead) {
             rb.velocity *= 0;
