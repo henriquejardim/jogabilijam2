@@ -19,4 +19,12 @@ public class TweenMove : MonoBehaviour {
 		var path = GetComponent<iTweenPath> ();
 		iTween.MoveTo (gameObject, iTween.Hash ("path", iTweenPath.GetPath (PathName), "time", PathTime, "easetype", ease));
 	}
+
+	public void Stop(){
+		iTween.Stop (gameObject);
+	}
+
+	public void Resume(){
+		iTween.Resume (gameObject);
+	}
 }

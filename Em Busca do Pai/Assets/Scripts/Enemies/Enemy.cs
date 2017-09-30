@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour {
 	private SpriteRenderer sr;
 	private Target target;
 	private AutoMove autoMove;
+	private TweenMove pathComponent;
 
 	private bool onPath = false;
 
@@ -27,11 +28,14 @@ public class Enemy : MonoBehaviour {
 
 	private float lastShot = 0f;
 
+
+
 	// Use this for initialization
 	void Start () {
 		autoMove = GetComponent<AutoMove> ();
 		sr = GetComponent<SpriteRenderer> ();
 		target = GetComponent<Target> ();
+		pathComponent = GetComponent<TweenMove>();
 		m_DefaultColor = sr.color;
 
 		target.dead.AddListener (AfterDead);
@@ -52,7 +56,7 @@ public class Enemy : MonoBehaviour {
 		float rot_z = Mathf.Atan2(lTargetDir.y, lTargetDir.x) * Mathf.Rad2Deg;
 		shotPoint.transform.rotation =  Quaternion.Euler(0f, 0f, rot_z - 90);
 
-		if (lastShot <= Time.time) {
+		if (lastShot <= Time.time && player.transform.position.y <= transform.position.y) {
 			lastShot = Time.time + CoolDownFire;
 			var bullet =  Instantiate (Bullet, shotPoint.transform.position, shotPoint.transform.rotation);
 			var projController = bullet.GetComponent<ProjectileController> ();
@@ -66,7 +70,8 @@ public class Enemy : MonoBehaviour {
 		dead = true;
 		var particles = Instantiate (DeadParticles, transform.position, transform.rotation);
 		sr.enabled = false;
-		Destroy (gameObject);
+		pathComponent.Stop ();
+		Destroy (gameObject, 1f);
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -76,7 +81,6 @@ public class Enemy : MonoBehaviour {
 			
 			FindPlayer ();
 
-			var pathComponent = GetComponent<TweenMove> ();
 			if (pathComponent != null && !onPath && PathEnabled) {
 				onPath = true;
 				autoMove.enabled = false;
