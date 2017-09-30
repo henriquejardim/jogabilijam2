@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+
 
 public class Frog : MonoBehaviour {
 
@@ -48,17 +48,17 @@ public class Frog : MonoBehaviour {
 		}
 	}
 
-	void OnSceneGUI ()
-	{				
-		Handles.color = Color.red;
-		Handles.DrawWireDisc (transform.position, Vector3.forward, agressiveRadius);
-	}
 
 	void OnTriggerEnter2D(Collider2D other) {
 
 		Debug.Log (other.tag);
 		if (other.CompareTag ("PathTrigger")) {
 			FindPlayer ();
+		}
+
+		if (other.gameObject.CompareTag("Player")){
+			var target = other.gameObject.GetComponent<Target>();
+			target.TakeDamage(1f);
 		}
 	}
 

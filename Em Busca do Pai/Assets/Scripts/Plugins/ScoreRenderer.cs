@@ -14,11 +14,11 @@ public class ScoreRenderer
 		maxScore.RenderNumber (0);
 	}
 
-	void SetScore(int newScore){
+	public void SetScore(int newScore){
 		score.RenderNumber (newScore);
 	}
 
-	void SetMaxScore(int newMaxScore){
+	public void SetMaxScore(int newMaxScore){
 		score.RenderNumber (newMaxScore);
 	}
 

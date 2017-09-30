@@ -8,6 +8,7 @@ public class Target : MonoBehaviour {
 	public int health = 1;
 	public UnityEvent dead;
     public UnityEvent hurt;
+	public bool invulnarable;
 
     private float m_CurrentHealth = 0;
 
@@ -16,7 +17,9 @@ public class Target : MonoBehaviour {
 	}
 
 	public void TakeDamage(float amount){
-
+		if (invulnarable)
+			return;
+		
 		m_CurrentHealth -= amount;
 
         if (hurt != null)

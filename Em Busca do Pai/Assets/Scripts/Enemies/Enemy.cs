@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour {
 	public float CoolDownFire;
 	public float BulletSpeed;
 	public bool PathEnabled;
+	public int Score = 100;
 
 	private Color m_DefaultColor;
 	private SpriteRenderer sr;
@@ -74,7 +75,12 @@ public class Enemy : MonoBehaviour {
 		dead = true;
 		var particles = Instantiate (DeadParticles, transform.position, transform.rotation);
 		sr.enabled = false;
+		var getColliders = GetComponents<Collider2D> ();
+		foreach (var item in getColliders) {
+			item.enabled = false;	
+		}
 		pathComponent.Stop ();
+		GameController.instance.AddScore (Score);
 		Destroy (gameObject, 1f);
 	}
 

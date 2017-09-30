@@ -42,12 +42,18 @@ public class PlayerController : MonoBehaviour {
     public void AfterHurt() {
         sr.color = hurtColor;
         hurt = true;
+		anim.SetBool ("Hurt", hurt);
+		GameController.instance.RemoveLife ();
+		target.invulnarable = hurt;
         StartCoroutine(HurtWait());
     }
 
     private IEnumerator HurtWait() {
-        yield return new WaitForSeconds(0.3f); //invul time
+        yield return new WaitForSeconds(1f); //invul time
         hurt = false;
+		anim.SetBool ("Hurt", hurt);
+		target.invulnarable = hurt;
+
     }
 
     public void AfterDead() {        
