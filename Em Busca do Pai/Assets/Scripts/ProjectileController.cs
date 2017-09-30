@@ -14,6 +14,7 @@ public class ProjectileController : MonoBehaviour {
 
 	void Start(){
 		rb = gameObject.GetComponent<Rigidbody2D> ();
+		DestroyObject (gameObject, 5f);
 	}
 
 

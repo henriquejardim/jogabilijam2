@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour {
 
 		rb.velocity = m_Movement;        
 
-        if (Input.GetMouseButton(0) && lastShot <= Time.time)
+		if (Input.GetButton("Fire1") && lastShot <= Time.time)
 			Shoot ();
 
 		if (Input.GetMouseButtonDown (1))

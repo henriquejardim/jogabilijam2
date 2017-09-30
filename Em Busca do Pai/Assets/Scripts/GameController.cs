@@ -13,14 +13,40 @@ public  class GameController : MonoBehaviour {
 	public static int score = 0;
 	public static int maxScore = 0;
 
-	public UIController ui;
+	public UIController ui = UIController.instance;
 
+
+	enum GameState {
+		Begining,
+		Playing,
+		GameOver,
+		Ending
+	}
+
+	private GameState state;
+
+	private bool changingScene = false;
 
 	public static class SceneNames
 	{
 		public static string Stage1 = "Stage1";
 		public static string GameOver = "GameOver";
+		public static string GameWin = "GameWin";
 
+	}
+
+	void Update(){
+		//if (state == GameState.GameOver && Input.GetButtonDown ("Fire1") && !changingScene)
+		//	StartCoroutine (LoadScene (SceneNames.Stage1));
+	}
+
+	IEnumerator LoadScene(string name){
+		changingScene = true;
+		yield return new WaitForSeconds(3f);
+		SceneManager. LoadScene (name);
+		Reset ();
+		state = GameState.Playing;
+		changingScene = false;
 	}
 
 	void Awake(){
@@ -58,10 +84,13 @@ public  class GameController : MonoBehaviour {
 			PlayerPrefs.SetInt("High Score", score);
 
 		SceneManager.LoadScene (SceneNames.GameOver);
+		state = GameState.GameOver;
 	}
 
 
 	public void Reset(){
+		ui.Reset ();
+
 		lifes = 3;
 		score = 0;
 		maxScore = 0;
@@ -70,6 +99,7 @@ public  class GameController : MonoBehaviour {
 		ui.SetScore (score);
 		ui.SetMaxScore (score);
 		ui.SetLifes (lifes);
+
 
 	}
 
