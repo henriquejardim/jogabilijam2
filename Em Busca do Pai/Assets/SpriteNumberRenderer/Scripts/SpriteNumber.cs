@@ -6,7 +6,7 @@ public class SpriteNumber : MonoBehaviour {
 
 	
 	public Sprite[] numbers;
-	[UnityEngine.HideInInspector]
+
 	public SpriteRenderer render;
 
 	// Use this for initialization

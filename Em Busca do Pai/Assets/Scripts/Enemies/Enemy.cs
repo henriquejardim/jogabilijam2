@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour {
 	public Color newColor;
 	public GameObject shotPoint;
 	public GameObject Bullet;
+	public GameObject DeadParticles;
 	public float CoolDownFire;
 	public float BulletSpeed;
 	public bool PathEnabled;
@@ -43,13 +44,12 @@ public class Enemy : MonoBehaviour {
             return;
         }
 
-        if (!playerFound)
-            return;         
+		if (!playerFound)
+            return;      
 
 		Vector3 lTargetDir = player.transform.position - shotPoint.transform.position;
 		lTargetDir.Normalize ();
 		float rot_z = Mathf.Atan2(lTargetDir.y, lTargetDir.x) * Mathf.Rad2Deg;
-			 
 		shotPoint.transform.rotation =  Quaternion.Euler(0f, 0f, rot_z - 90);
 
 		if (lastShot <= Time.time) {
@@ -64,6 +64,9 @@ public class Enemy : MonoBehaviour {
 	public void AfterDead(){
 		sr.color = newColor;
 		dead = true;
+		var particles = Instantiate (DeadParticles, transform.position, transform.rotation);
+		sr.enabled = false;
+		Destroy (gameObject);
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -84,9 +87,11 @@ public class Enemy : MonoBehaviour {
 	}
 
 
-	void FindPlayer(){
+	bool FindPlayer(){
 		player = GameObject.FindWithTag ("Player");
 		playerFound = player != null;
+
+		return playerFound;
 	}
 
 

@@ -7,6 +7,7 @@ public class ProjectileController : MonoBehaviour {
 
 	public float damage = 1f;
 	public float speed = 200f;
+	public GameObject hitParticles;
 
 
 	private Rigidbody2D rb;
@@ -33,6 +34,8 @@ public class ProjectileController : MonoBehaviour {
 		if (target != null) {
 			target.TakeDamage (damage);
 
+			var particle = Instantiate (hitParticles,  transform.position, transform.rotation, target.gameObject.transform);
+			Destroy (particle, 1f);
 			DestroyObject (this.gameObject);	
 		}
 
@@ -42,10 +45,12 @@ public class ProjectileController : MonoBehaviour {
 	}
 	void OnCollisionEnter2D(Collision2D other) {
 		Debug.Log ("TESTE Coll");
+
 		var target = other.gameObject.GetComponent<Target> ();
 		if (target != null) {
 			target.TakeDamage (damage);
-
+			var particle = Instantiate (hitParticles, other.contacts[0].point, target.transform.rotation);
+			Destroy (particle, 1f);
 			DestroyObject (this.gameObject);
 
 		}
