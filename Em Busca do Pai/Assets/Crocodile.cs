@@ -1,25 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
-public class Frog : MonoBehaviour {
+public class Crocodile : MonoBehaviour {
 
-	public float agressiveRadius = 5f;
+	public float threatRadius = 10f;
+	public float damage = 4f;
+	public float idleDamage = 1f;
 
 	private GameObject player;
 	private Enemy enemy;
 	private Animator animator;
 
-	private enum FrogState {
+	private enum CrocState {
 		Idle,
 		Agressive
 	}
 
 
-	private FrogState state;
+	private CrocState state;
 	private bool playerFound;
-	private bool exploding;
+	private bool attacking;
 
 	// Use this for initialization
 	void Start () {
@@ -29,29 +30,35 @@ public class Frog : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
 		if (playerFound) {
 			var distance = Vector2.Distance (transform.position, player.transform.position);
-			if (distance <= agressiveRadius)
-				state = FrogState.Agressive;
+			if (distance <= threatRadius)
+				state = CrocState.Agressive;
 		}
 
 		switch (state)
 		{
-		case FrogState.Agressive:
-			if (!exploding) {
-				exploding = true;
-				animator.SetTrigger ("Attack");
-			}
-			break;
+			case CrocState.Agressive:
+				if (!attacking) {
+					attacking = true;
+					animator.SetTrigger ("Attack");
+				}
+				break;
 		default:
 			break;
 		}
 	}
 
-	void OnSceneGUI ()
-	{				
-		Handles.color = Color.red;
-		Handles.DrawWireDisc (transform.position, Vector3.forward, agressiveRadius);
+	void OnEndAttack(){
+		attacking = false;
+		state = CrocState.Idle;
+		damage = idleDamage;
+
+	}
+
+	void OnBeginAttack(){
+		damage *= 4f;
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -60,6 +67,12 @@ public class Frog : MonoBehaviour {
 		if (other.CompareTag ("PathTrigger")) {
 			FindPlayer ();
 		}
+
+		if (other.gameObject.CompareTag("Player")){
+			var target = other.gameObject.GetComponent<Target>();
+			target.TakeDamage(state == CrocState.Idle ? idleDamage : damage);
+		}
+			
 	}
 
 	bool FindPlayer(){
@@ -68,7 +81,5 @@ public class Frog : MonoBehaviour {
 
 		return playerFound;
 	}
-		
-	public void DestroyMe() { Debug.Log ("FROG BOOM"); Destroy(gameObject); }
 		
 }

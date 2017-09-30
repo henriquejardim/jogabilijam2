@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour {
 	public GameObject shotPoint;
 	public GameObject Bullet;
 	public GameObject DeadParticles;
+	public bool ShotEnabled = true;
 	public float CoolDownFire;
 	public float BulletSpeed;
 	public bool PathEnabled;
@@ -51,6 +52,9 @@ public class Enemy : MonoBehaviour {
 		if (!playerFound)
             return;      
 
+		if (!ShotEnabled)
+			return;
+		
 		Vector3 lTargetDir = player.transform.position - shotPoint.transform.position;
 		lTargetDir.Normalize ();
 		float rot_z = Mathf.Atan2(lTargetDir.y, lTargetDir.x) * Mathf.Rad2Deg;
@@ -97,6 +101,5 @@ public class Enemy : MonoBehaviour {
 
 		return playerFound;
 	}
-
 
 }
