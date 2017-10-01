@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour {
 	public float BulletSpeed;
 	public bool PathEnabled;
 	public int Score = 100;
+	public GameController controller;
+
 
 	private Color m_DefaultColor;
 	private SpriteRenderer sr;
@@ -40,6 +42,7 @@ public class Enemy : MonoBehaviour {
 		pathComponent = GetComponent<TweenMove>();
 		m_DefaultColor = sr.color;
 
+		controller = GameObject.FindObjectOfType<GameController> ();
 		target.dead.AddListener (AfterDead);
 	}
 
@@ -80,7 +83,7 @@ public class Enemy : MonoBehaviour {
 			item.enabled = false;	
 		}
 		pathComponent.Stop ();
-		GameController.instance.AddScore (Score);
+		controller.AddScore (Score);
 		Destroy (gameObject, 1f);
 	}
 

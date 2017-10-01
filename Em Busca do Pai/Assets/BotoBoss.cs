@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class BotoBoss : MonoBehaviour {
 
+	public GameObject DeadParticles;
 
 	public GameObject[] shotPoints;
 	public GameObject Bullet;
 
+	public GameController controller;
 
 	public bool ShotEnabled = true;
 	public float CoolDownFire;
@@ -48,6 +50,10 @@ public class BotoBoss : MonoBehaviour {
 		shotPointsLeft  = new GameObject[] { shotPoints [1], shotPoints[3]};
 		anim = GetComponent<Animator> ();
 		autoMove = GetComponent<AutoMove> ();
+		pathComponent = GetComponent<TweenMove> ();
+		target = GetComponent<Target> ();
+		target.dead.AddListener (AfterDead);
+		controller = GameObject.FindObjectOfType<GameController> ();
 	}
 	
 	// Update is called once per frame
@@ -140,6 +146,24 @@ public class BotoBoss : MonoBehaviour {
 				pathComponent.MovePath ();
 			}
 		}
+	}
+
+	public void AfterDead(){
+		state = BossState.Inactive;
+
+		Instantiate (DeadParticles, transform.position, transform.rotation);
+		Instantiate (DeadParticles, transform.position, transform.rotation);
+		Instantiate (DeadParticles, transform.position, transform.rotation);
+		Instantiate (DeadParticles, transform.position, transform.rotation);
+		Instantiate (DeadParticles, transform.position, transform.rotation);
+		Instantiate (DeadParticles, transform.position, transform.rotation);
+
+		StartCoroutine(EndGame ());
+	}
+
+	IEnumerator EndGame(){
+		yield return new WaitForSeconds (10f);
+		controller.EndGame ();
 	}
 }
 

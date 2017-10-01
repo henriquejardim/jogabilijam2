@@ -8,12 +8,17 @@ public class ProjectileController : MonoBehaviour {
 	public float damage = 1f;
 	public float speed = 200f;
 	public GameObject hitParticles;
+	public AudioSource  ad ;
+
+	public AudioClip hit;
+	public AudioClip laser;
 
 
 	private Rigidbody2D rb;
 
 	void Start(){
 		rb = gameObject.GetComponent<Rigidbody2D> ();
+		ad = gameObject.GetComponent<AudioSource> ();
 		DestroyObject (gameObject, 5f);
 	}
 
@@ -24,7 +29,6 @@ public class ProjectileController : MonoBehaviour {
 	
 	}
 	void FixedUpdate() {
-
 		rb.transform.Translate ((Vector2.up) * speed * Time.fixedDeltaTime);
 	
 	}
@@ -34,10 +38,12 @@ public class ProjectileController : MonoBehaviour {
 		var target = other.gameObject.GetComponent<Target> ();
 		if (target != null) {
 			target.TakeDamage (damage);
+			Debug.Log ("AUDIO1");
+			ad.PlayOneShot (hit, 0.7f);
 
 			var particle = Instantiate (hitParticles,  transform.position, transform.rotation, target.gameObject.transform);
 			Destroy (particle, 1f);
-			DestroyObject (this.gameObject);	
+			DestroyObject (this.gameObject, 1f);	
 		}
 
 		if (other.gameObject.CompareTag("BorderUp"))
@@ -50,9 +56,12 @@ public class ProjectileController : MonoBehaviour {
 		var target = other.gameObject.GetComponent<Target> ();
 		if (target != null) {
 			target.TakeDamage (damage);
+			Debug.Log ("AUDIO2");
+			ad.PlayOneShot (hit, 0.7f);
 			var particle = Instantiate (hitParticles, other.contacts[0].point, target.transform.rotation);
 			Destroy (particle, 1f);
-			DestroyObject (this.gameObject);
+			DestroyObject (this.gameObject, 1f);	
+
 
 		}
 		if (other.gameObject.CompareTag("BorderUp"))

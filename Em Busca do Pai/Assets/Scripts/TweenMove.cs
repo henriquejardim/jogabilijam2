@@ -9,6 +9,7 @@ public class TweenMove : MonoBehaviour {
 	public string PathName;
 	public float PathTime =15f;
 	public iTween.EaseType ease = iTween.EaseType.easeInOutSine;
+	public iTween.LoopType loop = iTween.LoopType.none;
 	// Use this for initialization
 	
 	// Update is called once per frame
@@ -16,7 +17,7 @@ public class TweenMove : MonoBehaviour {
 	}
 
 	public void MovePath(){
-		iTween.MoveTo (gameObject, iTween.Hash ("path", iTweenPath.GetPath (PathName), "time", PathTime, "easetype", ease));
+		iTween.MoveTo (gameObject, iTween.Hash ("path", iTweenPath.GetPath (PathName), "time", PathTime, "easetype", ease, "looptype", loop));
 	}
 
 	public void Stop(){

@@ -11,25 +11,12 @@ public class UIController : MonoBehaviour {
 
 	public ScoreRenderer scoreRenderer;
 
-	public static UIController instance;
+	public UIController instance;
 
 	void Awake(){
-		//Check if instance already exists
-		if (instance == null)
-
-			//if not, set instance to this
-			instance = this;
-
-		//If instance already exists and it's not this:
-		else if (instance != this)
-
-			//Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
-			Destroy(gameObject);    
-
-		//Sets this to not be destroyed when reloading scene
-		DontDestroyOnLoad(gameObject);
+		
 	}
-
+	
 	// Use this for initialization
 	void Start () {
 		Reset ();
@@ -37,14 +24,12 @@ public class UIController : MonoBehaviour {
 
 
 	public void Reset(){
-		Vida1 = GameObject.FindGameObjectWithTag ("Vida1");
-		Vida2 = GameObject.FindGameObjectWithTag ("Vida2");
-		Vida3 = GameObject.FindGameObjectWithTag ("Vida3");
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		Debug.Log (gameObject.GetInstanceID());
 	}
 
 

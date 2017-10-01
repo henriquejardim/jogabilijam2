@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour {
     public GameObject Bullet;
 	public GameObject ShotPoint;
 
+	public GameController controller;
+
     private Color m_DefaultColor;
 
     private Vector2 m_Movement;
@@ -35,15 +37,18 @@ public class PlayerController : MonoBehaviour {
         sr = GetComponent<SpriteRenderer>();
         m_DefaultColor = sr.color;
 
+		controller = GameObject.FindObjectOfType<GameController> ();
+
         target.dead.AddListener(AfterDead);        
         target.hurt.AddListener(AfterHurt);
     }
+
 
     public void AfterHurt() {
         sr.color = hurtColor;
         hurt = true;
 		anim.SetBool ("Hurt", hurt);
-		GameController.instance.RemoveLife ();
+		controller.RemoveLife ();
 		target.invulnarable = hurt;
         StartCoroutine(HurtWait());
     }
