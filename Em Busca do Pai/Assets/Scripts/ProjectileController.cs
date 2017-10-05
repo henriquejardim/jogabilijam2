@@ -37,11 +37,13 @@ public class ProjectileController : MonoBehaviour {
 		Debug.Log ("TESTE Trigger");
 		var target = other.gameObject.GetComponent<Target> ();
 		if (target != null) {
+			
 			target.TakeDamage (damage);
 			Debug.Log ("AUDIO1");
 			ad.PlayOneShot (hit, 0.7f);
 
 			var particle = Instantiate (hitParticles,  transform.position, transform.rotation, target.gameObject.transform);
+			transform.position += Vector3.left * 1000f;
 			Destroy (particle, 1f);
 			DestroyObject (this.gameObject, 1f);	
 		}

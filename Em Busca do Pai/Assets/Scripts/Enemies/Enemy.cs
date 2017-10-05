@@ -111,4 +111,10 @@ public class Enemy : MonoBehaviour {
 		return playerFound;
 	}
 
+	public bool IsDead()
+	{
+		return dead;
+	}
+
+
 }

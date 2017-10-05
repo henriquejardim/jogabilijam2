@@ -100,8 +100,8 @@ public  class GameController : MonoBehaviour {
 		Debug.Log (maxScore);
 		if (score > maxScore)
 			PlayerPrefs.SetInt("HighScore", score);
-
-		SceneManager.LoadScene (SceneNames.GameOver);
+		
+		LoadScene2 (SceneNames.GameOver);
 		state = GameState.GameOver;
 	}
 

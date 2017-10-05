@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour {
 	public ScoreRenderer scoreRenderer;
 
 	public UIController instance;
+	public GameObject lifeLostParticles;
 
 	void Awake(){
 		
@@ -48,16 +49,22 @@ public class UIController : MonoBehaviour {
 			Vida1.SetActive (false);
 			Vida2.SetActive (false);
 			Vida3.SetActive (false);
+			var v1 = Instantiate (lifeLostParticles, Vida1.transform.position, Vida1.transform.rotation);
+			Destroy (v1, 1f);
 			break;
 		case 1: 
 			Vida1.SetActive (true);
 			Vida2.SetActive (false);
 			Vida3.SetActive (false);
+			var v2 = Instantiate (lifeLostParticles, Vida2.transform.position, Vida2.transform.rotation);
+			Destroy (v2, 1f);
 			break;
 		case 2:
 			Vida1.SetActive (true);
 			Vida2.SetActive (true);
 			Vida3.SetActive (false);
+			var v3 = Instantiate (lifeLostParticles, Vida3.transform.position, Vida3.transform.rotation);
+			Destroy (v3, 1f);
 			break;
 		case 3:
 			Vida1.SetActive (true);

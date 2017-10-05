@@ -68,7 +68,21 @@ public class Frog : MonoBehaviour {
 
 		return playerFound;
 	}
-		
+
+	public void ActivateBoxCollider(){
+		if (enemy.IsDead ())
+			return;
+		var circle = GetComponent<BoxCollider2D> ();
+		circle.enabled = true;
+	}
+
+	public void ActivateCircleCollider(){
+		if (enemy.IsDead ())
+			return;
+		var circle = GetComponent<CircleCollider2D> ();
+		circle.enabled = true;
+	}
+
 	public void DestroyMe() { Debug.Log ("FROG BOOM"); Destroy(gameObject); }
 		
 }

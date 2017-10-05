@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
     private Color hurtColor = Color.red;
     public GameObject Bullet;
 	public GameObject ShotPoint;
+	public GameObject DeadParticles;
 
 	public GameController controller;
 
@@ -21,6 +22,10 @@ public class PlayerController : MonoBehaviour {
 
     private Animator anim;
     private Target target;
+
+	private BoxCollider2D boxCollider;
+	private AudioSource audioSource;
+
 
     private bool dead = false;
     private bool hurt = false;
@@ -35,6 +40,8 @@ public class PlayerController : MonoBehaviour {
         target = GetComponent<Target>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+		boxCollider = GetComponent<BoxCollider2D> ();
+		audioSource = GetComponent<AudioSource> ();
         m_DefaultColor = sr.color;
 
 		controller = GameObject.FindObjectOfType<GameController> ();
@@ -47,23 +54,48 @@ public class PlayerController : MonoBehaviour {
     public void AfterHurt() {
         sr.color = hurtColor;
         hurt = true;
+		target.invulnarable = hurt;
 		anim.SetBool ("Hurt", hurt);
 		controller.RemoveLife ();
-		target.invulnarable = hurt;
+		boxCollider.enabled = false;
+		StartCoroutine("Hitstop");
+
         StartCoroutine(HurtWait());
     }
 
     private IEnumerator HurtWait() {
         yield return new WaitForSeconds(1f); //invul time
-        hurt = false;
-		anim.SetBool ("Hurt", hurt);
-		target.invulnarable = hurt;
+		anim.SetBool ("Hurt", false);
+		if (!dead) {
+			hurt = false;
+			target.invulnarable = hurt;
+			boxCollider.enabled = true;
+		}
 
     }
 
-    public void AfterDead() {        
+	IEnumerator Hitstop(){
+		Time.timeScale = 0f;
+		float RealTimeOfTimestopStart = Time.realtimeSinceStartup;
+		float lengthOfTimestop = 0.2f;
+		while(Time.realtimeSinceStartup < RealTimeOfTimestopStart + lengthOfTimestop){
+			yield return null;
+		}
+		Time.timeScale = 1f;
+	}
+
+    public void AfterDead() {    
+		iTween.FadeTo (gameObject, 0f, 1f);
         dead = true;
+		hurt = true;
+		target.invulnarable = hurt;
+		boxCollider.enabled = false;
+		audioSource.PlayDelayed (0.3f);
+		Invoke ("InvokeParticles", 0.3f);
     }
+	void  InvokeParticles(){
+		Instantiate (DeadParticles, gameObject.transform.position, gameObject.transform.rotation, gameObject.transform.parent);
+	}
 
     // Update is called once per frame
     void Update () {
